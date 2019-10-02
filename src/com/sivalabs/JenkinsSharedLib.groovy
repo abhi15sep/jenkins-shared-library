@@ -1,5 +1,5 @@
 package com.sivalabs
-import groovy.json.JsonSlurper
+import groovy.json.JsonSlurperClassic
 
 class JenkinsSharedLib implements Serializable {
 
@@ -21,12 +21,13 @@ class JenkinsSharedLib implements Serializable {
         this.currentBuild = currentBuild
     }
 
+    @NonCPS
     def configureBuild() {
         steps.echo "${env}"
         def filePath = this.env.WORKSPACE + '/pipeline.json'
         steps.echo "pipeline.json path: ${filePath}"
         def pipelineJson = new File(filePath)
-        def jsonSlurper = new JsonSlurper()
+        def jsonSlurper = new JsonSlurperClassic()
         pipelineSpec = jsonSlurper.parse(pipelineJson)
     }
 
