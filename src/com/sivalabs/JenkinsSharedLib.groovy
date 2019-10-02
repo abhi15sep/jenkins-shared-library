@@ -37,7 +37,7 @@ class JenkinsSharedLib implements Serializable {
     }
 
     def getEnvSpecValue(String envName, String key) {
-        steps.vecho "envName: ${envName}, key=${key}"
+        steps.echo "envName: ${envName}, key=${key}"
         def val = pipelineSpec['environments'][envName][key]
         steps.echo "Actual Value: ${val}"
         def defVal = pipelineSpec['environments']["default"][key]
