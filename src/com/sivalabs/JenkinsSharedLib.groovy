@@ -1,5 +1,5 @@
 package com.sivalabs
-import groovy.json.JsonSlurperClassic
+// import groovy.json.JsonSlurperClassic
 
 class JenkinsSharedLib implements Serializable {
 
@@ -11,7 +11,7 @@ class JenkinsSharedLib implements Serializable {
     def currentBuild
 
     //local variables
-    def pipelineSpec
+    // def pipelineSpec
 
     JenkinsSharedLib(steps, env, params, scm, currentBuild) {
         this.steps = steps
@@ -21,6 +21,7 @@ class JenkinsSharedLib implements Serializable {
         this.currentBuild = currentBuild
     }
 
+    /*
     @NonCPS
     def configureBuild() {
         steps.echo "${env}"
@@ -44,6 +45,7 @@ class JenkinsSharedLib implements Serializable {
         steps.echo "Default Value: ${defVal}"
         return val ?: defVal
     }
+    */
 
     def checkout() {
         steps.stage("Checkout") {
@@ -89,7 +91,7 @@ class JenkinsSharedLib implements Serializable {
 
     def publishDockerImage() {
         steps.stage("Publish Docker Image") {
-            steps.echo "From Config:: PUBLISH_TO_DOCKERHUB: ${getEnvSpecValue('publishDockerImage')}"
+            // steps.echo "From Config:: PUBLISH_TO_DOCKERHUB: ${getEnvSpecValue('publishDockerImage')}"
             steps.echo "PUBLISH_TO_DOCKERHUB: ${params.PUBLISH_TO_DOCKERHUB}"
             if(params.PUBLISH_TO_DOCKERHUB) {
                 steps.echo "Publishing to dockerhub. DOCKER_USERNAME=${env.DOCKER_USERNAME}, APPLICATION_NAME=${env.APPLICATION_NAME}"
