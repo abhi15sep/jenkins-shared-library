@@ -73,12 +73,14 @@ class JenkinsSharedLib implements Serializable {
     }
 
     def runMavenGatlingTests() {
-        steps.stage('Performance Test') {
-            try {
-                steps.sh './mvnw clean gatling:test'
-            } finally {
-                steps.gatlingArchive()
-                /*
+        steps.echo "RUN_PERF_TESTS: ${params.RUN_PERF_TESTS}"
+        if(params.RUN_PERF_TESTS) {
+            steps.stage('Performance Test') {
+                try {
+                    steps.sh './mvnw clean gatling:test'
+                } finally {
+                    steps.gatlingArchive()
+                    /*
                 steps.publishHTML(target:[
                      allowMissing: true,
                      alwaysLinkToLastBuild: true,
@@ -88,6 +90,7 @@ class JenkinsSharedLib implements Serializable {
                      reportName: "Gatling Report"
                 ])
                 */
+                }
             }
         }
     }
