@@ -109,9 +109,19 @@ class JenkinsSharedLib implements Serializable {
         }
     }
 
+    def deployOnHeroku() {
+        steps.echo "DEPLOY_ON_HEROKU: ${params.DEPLOY_ON_HEROKU}"
+        if(params.DEPLOY_ON_HEROKU) {
+            steps.stage("Heroku Deployment") {
+                steps.withCredentials([string(credentialsId: 'HEROKU_API_KEY', variable: 'HEROKU_API_KEY')]) {
+                    steps.sh 'HEROKU_API_KEY="${env.HEROKU_API_KEY}" ./mvnw heroku:deploy'
+                }
+            }
+        }
+    }
+
     def publishDockerImage() {
         steps.stage("Publish Docker Image") {
-            // steps.echo "From Config:: PUBLISH_TO_DOCKERHUB: ${getEnvSpecValue('publishDockerImage')}"
             steps.echo "PUBLISH_TO_DOCKERHUB: ${params.PUBLISH_TO_DOCKERHUB}"
             if(params.PUBLISH_TO_DOCKERHUB) {
                 steps.echo "Publishing to dockerhub. DOCKER_USERNAME=${env.DOCKER_USERNAME}, APPLICATION_NAME=${env.APPLICATION_NAME}"
