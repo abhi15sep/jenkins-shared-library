@@ -152,7 +152,7 @@ class JenkinsSharedLib implements Serializable {
 
     def npmTest() {
         steps.stage("NPM Test") {
-            steps.sh 'npm test:ci'
+            steps.sh 'npm run test:ci'
         }
     }
 }
