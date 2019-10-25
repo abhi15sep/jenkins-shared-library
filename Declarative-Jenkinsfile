@@ -1,5 +1,5 @@
 #!groovy
-@Library('jenkins-java-shared-library')
+@Library('jenkins-shared-library')
 import com.sivalabs.JenkinsJavaLib
 
 def utils = new JenkinsJavaLib(this, env, scm, currentBuild)

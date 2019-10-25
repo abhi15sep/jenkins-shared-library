@@ -1,5 +1,4 @@
-# jenkins-java-shared-library
-jenkins-java-shared-library
+# jenkins-shared-library
 
 ## Usage
 
@@ -9,7 +8,7 @@ jenkins-java-shared-library
 
 ```groovy
 #!groovy
-@Library('jenkins-java-shared-library')
+@Library('jenkins-shared-library')
 import com.sivalabs.JenkinsJavaLib
 
 def utils = new JenkinsJavaLib(this, env, scm, currentBuild)
@@ -42,7 +41,7 @@ pipeline {
 
 ```groovy
 #!groovy
-@Library('jenkins-java-shared-library')
+@Library('jenkins-shared-library')
 import com.sivalabs.JenkinsSharedLib
 
 def utils = new JenkinsSharedLib(this, env, scm, currentBuild)
@@ -68,11 +67,11 @@ node {
 #!groovy
 
 jsl = library(
-    identifier: 'jenkins-java-shared-library@master',
+    identifier: 'jenkins-shared-library@master',
     retriever: modernSCM(
         [
             $class: 'GitSCMSource',
-            remote: 'https://github.com/sivaprasadreddy/jenkins-java-shared-library.git'
+            remote: 'https://github.com/sivaprasadreddy/jenkins-shared-library.git'
         ]
     )
 )
