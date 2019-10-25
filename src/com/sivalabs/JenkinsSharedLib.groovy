@@ -142,4 +142,17 @@ class JenkinsSharedLib implements Serializable {
             }
         }
     }
+
+    def npmBuild() {
+        steps.stage("NPM Build") {
+            steps.sh 'npm install'
+            steps.sh 'npm run build'
+        }
+    }
+
+    def npmTest() {
+        steps.stage("NPM Test") {
+            steps.sh 'npm test:ci'
+        }
+    }
 }
