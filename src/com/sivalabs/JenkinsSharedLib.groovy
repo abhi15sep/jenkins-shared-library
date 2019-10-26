@@ -123,20 +123,20 @@ class JenkinsSharedLib implements Serializable {
         }
     }
 
-    def publishDockerImage() {
+    def publishDockerImage(dockerUsername, dockerImageName) {
         steps.stage("Publish Docker Image") {
             steps.echo "PUBLISH_TO_DOCKERHUB: ${params.PUBLISH_TO_DOCKERHUB}"
             if(params.PUBLISH_TO_DOCKERHUB) {
-                steps.echo "Publishing to dockerhub. DOCKER_USERNAME=${env.DOCKER_USERNAME}, APPLICATION_NAME=${env.APPLICATION_NAME}"
-                steps.sh "docker build -t ${env.DOCKER_USERNAME}/${env.APPLICATION_NAME}:${env.BUILD_NUMBER} -t ${env.DOCKER_USERNAME}/${env.APPLICATION_NAME}:latest ."
+                steps.echo "Publishing to dockerhub. DOCKER_USERNAME=${dockerUsername}, APPLICATION_NAME=${dockerImageName}"
+                steps.sh "docker build -t ${dockerUsername}/${dockerImageName}:${env.BUILD_NUMBER} -t ${dockerUsername}/${dockerImageName}:latest ."
 
                 steps.withCredentials([[$class: 'UsernamePasswordMultiBinding',
                                   credentialsId: 'docker-hub-credentials',
                                   usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD']]) {
                     steps.sh "docker login --username ${env.DOCKERHUB_USERNAME} --password ${env.DOCKERHUB_PASSWORD}"
                 }
-                steps.sh "docker push ${env.DOCKER_USERNAME}/${env.APPLICATION_NAME}:latest"
-                steps.sh "docker push ${env.DOCKER_USERNAME}/${env.APPLICATION_NAME}:${env.BUILD_NUMBER}"
+                steps.sh "docker push ${dockerUsername}/${dockerImageName}:latest"
+                steps.sh "docker push ${dockerUsername}/${dockerImageName}:${env.BUILD_NUMBER}"
             } else {
                 steps.echo "Skipping Publish Docker Image"
             }
