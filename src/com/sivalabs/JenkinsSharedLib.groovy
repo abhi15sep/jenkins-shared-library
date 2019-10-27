@@ -116,7 +116,7 @@ class JenkinsSharedLib implements Serializable {
         steps.echo "DEPLOY_ON_HEROKU: ${params.DEPLOY_ON_HEROKU}"
         if(params.DEPLOY_ON_HEROKU) {
             steps.stage(stageName) {
-                steps.withCredentials([string(credentialsId: 'HEROKU_API_KEY', variable: 'HEROKU_API_KEY')]) {
+                steps.withCredentials([steps.string(credentialsId: 'HEROKU_API_KEY', variable: 'HEROKU_API_KEY')]) {
                     steps.sh 'HEROKU_API_KEY="${env.HEROKU_API_KEY}" ./mvnw heroku:deploy'
                 }
             }
