@@ -53,8 +53,8 @@ class JenkinsSharedLib implements Serializable {
         }
     }
 
-    def runMavenTests() {
-        steps.stage("Test") {
+    def runMavenTests(stageName = "Test") {
+        steps.stage(stageName) {
             try {
                 steps.sh './mvnw clean verify'
             } finally {
@@ -72,10 +72,10 @@ class JenkinsSharedLib implements Serializable {
         }
     }
 
-    def runMavenGatlingTests() {
+    def runMavenGatlingTests(stageName = "Performance Test") {
         steps.echo "RUN_PERF_TESTS: ${params.RUN_PERF_TESTS}"
         if(params.RUN_PERF_TESTS) {
-            steps.stage('Performance Test') {
+            steps.stage(stageName) {
                 try {
                     steps.sh './mvnw clean gatling:test'
                 } finally {
@@ -95,8 +95,8 @@ class JenkinsSharedLib implements Serializable {
         }
     }
 
-    def runOWASPChecks() {
-        steps.stage("OWASP Checks") {
+    def runOWASPChecks(stageName = "OWASP Checks") {
+        steps.stage(stageName) {
             try {
                 steps.sh './mvnw dependency-check:check'
             } finally {
@@ -112,10 +112,10 @@ class JenkinsSharedLib implements Serializable {
         }
     }
 
-    def deployOnHeroku() {
+    def deployOnHeroku(stageName = "Heroku Deployment") {
         steps.echo "DEPLOY_ON_HEROKU: ${params.DEPLOY_ON_HEROKU}"
         if(params.DEPLOY_ON_HEROKU) {
-            steps.stage("Heroku Deployment") {
+            steps.stage(stageName) {
                 steps.withCredentials([string(credentialsId: 'HEROKU_API_KEY', variable: 'HEROKU_API_KEY')]) {
                     steps.sh 'HEROKU_API_KEY="${env.HEROKU_API_KEY}" ./mvnw heroku:deploy'
                 }
@@ -123,8 +123,8 @@ class JenkinsSharedLib implements Serializable {
         }
     }
 
-    def publishDockerImage(dockerUsername, dockerImageName) {
-        steps.stage("Publish Docker Image") {
+    def publishDockerImage(stageName = "Publish Docker Image", dockerUsername, dockerImageName) {
+        steps.stage(stageName) {
             steps.echo "PUBLISH_TO_DOCKERHUB: ${params.PUBLISH_TO_DOCKERHUB}"
             if(params.PUBLISH_TO_DOCKERHUB) {
                 steps.echo "Publishing to dockerhub. DOCKER_USERNAME=${dockerUsername}, APPLICATION_NAME=${dockerImageName}"
@@ -143,15 +143,15 @@ class JenkinsSharedLib implements Serializable {
         }
     }
 
-    def npmBuild() {
-        steps.stage("NPM Build") {
+    def npmBuild(stageName = "NPM Build") {
+        steps.stage(stageName) {
             steps.sh 'npm install'
             steps.sh 'npm run build'
         }
     }
 
-    def npmTest() {
-        steps.stage("NPM Test") {
+    def npmTest(stageName = "NPM Test") {
+        steps.stage(stageName) {
             steps.sh 'npm run test:ci'
         }
     }
